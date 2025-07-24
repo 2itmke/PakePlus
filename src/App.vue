@@ -15,41 +15,6 @@ import { usePPStore } from './store'
 const { locale } = useI18n()
 const store = usePPStore()
 
-const disableRightClick = () => {
-    // disable f12
-    document.onkeydown = function (event: any) {
-        var winEvent: any = window.event
-        if (winEvent && winEvent.keyCode == 123) {
-            event.keyCode = 0
-            event.returnValue = false
-        }
-        if (winEvent && winEvent.keyCode == 13) {
-            winEvent.keyCode = 505
-        }
-    }
-    // disable right click
-    document.oncontextmenu = function (event: any) {
-        if (window.event) {
-            event = window.event
-        }
-        try {
-            var the = event.srcElement
-            if (
-                !(
-                    (the.tagName == 'INPUT' &&
-                        the.type.toLowerCase() == 'text') ||
-                    the.tagName == 'TEXTAREA'
-                )
-            ) {
-                return false
-            }
-            return true
-        } catch (e) {
-            return false
-        }
-    }
-}
-
 const initEnv = async () => {
     creatDeviceid()
     // listen theme change
@@ -79,7 +44,7 @@ const initEnv = async () => {
         })
         return false
     }
-    if (isMobile()) {
+    if (isMobile() && !isTauri) {
         // to https://sjj1024.github.io/PakePlus/
         window.location.href = 'https://ppofficial.pages.dev/'
         return
